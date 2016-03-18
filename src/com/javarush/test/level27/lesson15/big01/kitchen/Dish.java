@@ -1,18 +1,27 @@
 package com.javarush.test.level27.lesson15.big01.kitchen;
 
+import java.util.Arrays;
+
 /**
  * Created by alexandr on 14.03.16.
  */
-public enum Dish {
+public enum Dish
+{
 
-    Fish, Steak, Soup, Juice, Water;
+    Fish(25), Steak(30), Soup(15), Juice(5), Water(3);
 
-    public static String allDishesToString() {
-        StringBuilder string = new StringBuilder();
-        for (Dish dish : Dish.values()) {
-            string.append(dish.name() + ", ");
-        }
-        string.deleteCharAt(string.length()-2);
-        return string.toString().trim();
+    private int duration;
+
+    Dish(int duration) {
+        this.duration = duration;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public static String allDishesToString()
+    {
+        return values().length == 0 ? "" : Arrays.toString(values()).substring(1, Arrays.toString(values()).length() -1);
     }
 }
