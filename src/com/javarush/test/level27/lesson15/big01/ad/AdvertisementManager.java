@@ -46,4 +46,23 @@ public class AdvertisementManager {
             a.revalidate();
         }
     }
+
+    public static <T> List<List<T>> powerList(List<T> originalList) {
+        List<List<T>> Lists = new ArrayList<List<T>>();
+        if (originalList.isEmpty()) {
+            Lists.add(new ArrayList<T>());
+            return Lists;
+        }
+        List<T> list = new ArrayList<T>(originalList);
+        T head = list.get(0);
+        List<T> rest = new ArrayList<T>(list.subList(1, list.size()));
+        for (List<T> List : powerList(rest)) {
+            List<T> newList = new ArrayList<T>();
+            newList.add(head);
+            newList.addAll(List);
+            Lists.add(newList);
+            Lists.add(List);
+        }
+        return Lists;
+    }
 }
