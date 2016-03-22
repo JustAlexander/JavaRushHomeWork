@@ -29,12 +29,17 @@ public class Advertisement {
         this.initialAmount = initialAmount;
         this.hits = hits;
         this.duration = duration;
-        amountPerOneDisplaying = initialAmount / hits;
+        if (hits > 0)
+            amountPerOneDisplaying = (long)(initialAmount*1.0/hits);
 
     }
 
     public void revalidate() {
         if (hits <= 0) throw new UnsupportedOperationException();
         hits--;
+    }
+
+    public int getHits() {
+        return hits;
     }
 }

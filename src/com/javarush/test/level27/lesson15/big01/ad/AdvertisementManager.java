@@ -2,10 +2,7 @@ package com.javarush.test.level27.lesson15.big01.ad;
 
 import com.javarush.test.level27.lesson15.big01.ConsoleHelper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by alexandr on 16.03.16.
@@ -27,7 +24,9 @@ public class AdvertisementManager {
                 ad.add(advertisement);
         }
 
-        if (ad.isEmpty())
+        ad = knapSack(timeSeconds, ad, ad.size());
+
+        if (ad == null || ad.isEmpty())
             throw new NoVideoAvailableException();
 
         Collections.sort(ad, new Comparator<Advertisement>() {
@@ -47,22 +46,41 @@ public class AdvertisementManager {
         }
     }
 
-    public static <T> List<List<T>> powerList(List<T> originalList) {
-        List<List<T>> Lists = new ArrayList<List<T>>();
-        if (originalList.isEmpty()) {
-            Lists.add(new ArrayList<T>());
-            return Lists;
+    private List<Advertisement> knapSack(int W, List<Advertisement> ad, int n) {
+        if (n == 0 || W == 0)
+            return null;
+        if (ad.get(n-1).getDuration()/60 > W || ad.get(n-1).getHits() <= 0)
+            return knapSack(W, ad, n-1);
+        else {
+            List<Advertisement> l1 = new ArrayList<>();
+            l1.add(ad.get(n-1));
+            List<Advertisement> t = knapSack(W - ad.get(n - 1).getDuration()/60, ad, n - 1);
+            if (t != null) l1.addAll(t);
+            List<Advertisement> l2 = knapSack(W, ad, n - 1);
+            if (getTotalAmount(l1) == getTotalAmount(l2))
+                if (getTotalTime(l1) == getTotalTime(l2)) {
+                    return (l1.size() < (l2 != null ? l2.size() : Integer.MAX_VALUE)) ? l1 : l2;
+                } else
+                    return (getTotalTime(l1) > getTotalTime(l2)) ? l1 : l2;
+            else return (getTotalAmount(l1) > getTotalAmount(l2)) ? l1 : l2;
         }
-        List<T> list = new ArrayList<T>(originalList);
-        T head = list.get(0);
-        List<T> rest = new ArrayList<T>(list.subList(1, list.size()));
-        for (List<T> List : powerList(rest)) {
-            List<T> newList = new ArrayList<T>();
-            newList.add(head);
-            newList.addAll(List);
-            Lists.add(newList);
-            Lists.add(List);
+    }
+
+    private long getTotalAmount(List<Advertisement> ad) {
+        long totalAmount = 0;
+        if (ad == null) return totalAmount;
+        for (Advertisement a : ad) {
+            totalAmount += a.getAmountPerOneDisplaying();
         }
-        return Lists;
+        return totalAmount;
+    }
+
+    private int getTotalTime(List<Advertisement> ad) {
+        int totalTime = 0;
+        if (ad == null) return totalTime;
+        for (Advertisement a : ad) {
+            totalTime += a.getDuration()/60;
+        }
+        return totalTime;
     }
 }
