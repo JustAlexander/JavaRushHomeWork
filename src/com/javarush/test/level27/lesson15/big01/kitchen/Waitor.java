@@ -1,7 +1,6 @@
 package com.javarush.test.level27.lesson15.big01.kitchen;
 
 import com.javarush.test.level27.lesson15.big01.ConsoleHelper;
-import com.javarush.test.level27.lesson15.big01.Tablet;
 
 import java.util.Observable;
 import java.util.Observer;

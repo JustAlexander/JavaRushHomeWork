@@ -7,12 +7,16 @@ import java.util.List;
  * Created by alexandr on 16.03.16.
  */
 class AdvertisementStorage {
-    private static AdvertisementStorage ourInstance = new AdvertisementStorage();
+    private static AdvertisementStorage instance;
 
     private final List<Advertisement> videos = new ArrayList();
 
     public static AdvertisementStorage getInstance() {
-        return ourInstance;
+        if(instance == null){
+            instance = new AdvertisementStorage();
+        }
+        return instance;
+
     }
 
     private AdvertisementStorage() {

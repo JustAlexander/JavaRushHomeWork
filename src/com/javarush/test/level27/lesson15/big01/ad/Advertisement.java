@@ -30,12 +30,12 @@ public class Advertisement {
         this.hits = hits;
         this.duration = duration;
         if (hits > 0)
-            amountPerOneDisplaying = (long)(initialAmount*1.0/hits);
+            amountPerOneDisplaying = Math.round(initialAmount/hits);
 
     }
 
     public void revalidate() {
-        if (hits <= 0) throw new UnsupportedOperationException();
+        if (hits < 1) throw new UnsupportedOperationException();
         hits--;
     }
 
