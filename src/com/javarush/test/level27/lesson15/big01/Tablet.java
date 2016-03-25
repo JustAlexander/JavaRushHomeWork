@@ -12,10 +12,11 @@ import java.util.logging.Logger;
 /**
  * Created by alexandr on 14.03.16.
  */
-public class Tablet extends Observable {
+public class Tablet extends Observable
+{
     private final int number;
     private AdvertisementManager manager;
-    public static java.util.logging.Logger logger = Logger.getLogger(Tablet.class.getName());
+    private static java.util.logging.Logger logger = Logger.getLogger(Tablet.class.getName());
 
     public Tablet(int number)
     {
@@ -24,20 +25,22 @@ public class Tablet extends Observable {
 
     public void createOrder()
     {
-        try {
+        try
+        {
             Order order = new Order(this);
             ConsoleHelper.writeMessage(order.toString());
             if (order.isEmpty()) return;
-            manager = new AdvertisementManager(order.getTotalCookingTime());
-            try {
+            manager = new AdvertisementManager(order.getTotalCookingTime() * 60);
+            setChanged();
+            notifyObservers(order);
+            try
+            {
                 manager.processVideos();
             }
             catch (NoVideoAvailableException e)
             {
                 logger.log(Level.INFO, "No video is available for the order " + order);
             }
-            setChanged();
-            notifyObservers(order);
         }
         catch (IOException e)
         {

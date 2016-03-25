@@ -8,9 +8,11 @@ import java.util.Observer;
 /**
  * Created by alexandr on 15.03.16.
  */
-public class Waitor implements Observer {
+public class Waitor implements Observer
+{
     @Override
-    public void update(Observable observable, Object arg) {
+    public void update(Observable observable, Object arg)
+    {
         ConsoleHelper.writeMessage((Order) arg + " was cooked by " + (Cook) observable);
     }
 }
