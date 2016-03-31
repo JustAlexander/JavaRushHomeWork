@@ -42,6 +42,7 @@ public class Advertisement
     public void revalidate()
     {
         if (hits < 1) throw new UnsupportedOperationException();
+        if (hits == 1) amountPerOneDisplaying += initialAmount % amountPerOneDisplaying;
         hits--;
     }
 

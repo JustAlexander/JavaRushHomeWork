@@ -1,6 +1,8 @@
 package com.javarush.test.level27.lesson15.big01.ad;
 
 import com.javarush.test.level27.lesson15.big01.ConsoleHelper;
+import com.javarush.test.level27.lesson15.big01.statistic.StatisticManager;
+import com.javarush.test.level27.lesson15.big01.statistic.event.VideoSelectedEventDataRow;
 
 import java.util.*;
 
@@ -38,6 +40,9 @@ public class AdvertisementManager
                                 o2.getAmountPerOneDisplaying() * 1000 / o2.getDuration());
             }
         });
+
+        VideoSelectedEventDataRow event = new VideoSelectedEventDataRow(ad, getTotalAmount(ad), getTotalTime(ad));
+        StatisticManager.getInstance().register(event);
 
         for (Advertisement a : ad)
         {
