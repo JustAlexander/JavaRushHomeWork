@@ -35,15 +35,16 @@ public class Advertisement
         this.hits = hits;
         this.duration = duration;
         if (hits > 0)
-            amountPerOneDisplaying = initialAmount / hits;
+            amountPerOneDisplaying = Math.round((double)initialAmount / hits);
 
     }
 
     public void revalidate()
     {
         if (hits < 1) throw new UnsupportedOperationException();
-        if (hits == 1) amountPerOneDisplaying += initialAmount % amountPerOneDisplaying;
         hits--;
+        initialAmount -= amountPerOneDisplaying;
+        amountPerOneDisplaying = Math.round((double)initialAmount / hits);
     }
 
     public int getHits()

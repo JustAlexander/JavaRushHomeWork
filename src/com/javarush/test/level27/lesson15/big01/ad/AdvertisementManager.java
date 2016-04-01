@@ -46,9 +46,9 @@ public class AdvertisementManager
 
         for (Advertisement a : ad)
         {
-            a.revalidate();
             ConsoleHelper.writeMessage(a.getName() + " is displaying... " + a.getAmountPerOneDisplaying() + ", " +
                     a.getAmountPerOneDisplaying() * 1000 / a.getDuration());
+            a.revalidate();
         }
     }
 
