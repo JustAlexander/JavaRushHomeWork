@@ -1,9 +1,8 @@
 package com.javarush.test.level27.lesson15.big01.kitchen;
 
 import com.javarush.test.level27.lesson15.big01.ConsoleHelper;
-import com.javarush.test.level27.lesson15.big01.statistic.StatisticManager;
+import com.javarush.test.level27.lesson15.big01.statistic.StatisticEventManager;
 import com.javarush.test.level27.lesson15.big01.statistic.event.CookedOrderEventDataRow;
-import com.javarush.test.level27.lesson15.big01.statistic.event.EventDataRow;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -11,9 +10,15 @@ import java.util.Observer;
 /**
  * Created by alexandr on 15.03.16.
  */
-public class Cook extends Observable implements Observer
+public class Cook extends Observable
 {
     private String name;
+    private boolean busy;
+
+    public boolean isBusy()
+    {
+        return busy;
+    }
 
     public Cook(String name)
     {
@@ -26,14 +31,22 @@ public class Cook extends Observable implements Observer
         return name;
     }
 
-    @Override
-    public void update(Observable observable, Object arg)
+    public void startCookingOrder(Order order)
     {
-        Order order = (Order) arg;
+        busy = true;
+        try
+        {
+            Thread.sleep(order.getTotalCookingTime()*10);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
         ConsoleHelper.writeMessage("Start cooking - " + order + ", cooking time " + order.getTotalCookingTime() + "min");
         CookedOrderEventDataRow event = new CookedOrderEventDataRow(order.tablet.toString(), name, order.getTotalCookingTime() * 60, order.getDishes());
-        StatisticManager.getInstance().register(event);
+        StatisticEventManager.getInstance().register(event);
         setChanged();
         notifyObservers(order);
+        busy = false;
     }
 }

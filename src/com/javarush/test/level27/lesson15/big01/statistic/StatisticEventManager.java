@@ -6,25 +6,24 @@ import com.javarush.test.level27.lesson15.big01.statistic.event.EventDataRow;
 import com.javarush.test.level27.lesson15.big01.statistic.event.EventType;
 import com.javarush.test.level27.lesson15.big01.statistic.event.VideoSelectedEventDataRow;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Created by alexandr on 28.03.16.
  */
-public class StatisticManager
+public class StatisticEventManager
 {
     private StatisticStorage statisticStorage = new StatisticStorage();
-    private static StatisticManager ourInstance = new StatisticManager();
+    private static StatisticEventManager ourInstance = new StatisticEventManager();
     private Set<Cook> cookSet = new HashSet<>();
 
-    public static StatisticManager getInstance()
+    public static StatisticEventManager getInstance()
     {
         return ourInstance;
     }
 
-    private StatisticManager()
+    private StatisticEventManager()
     {
 
     }
@@ -32,6 +31,11 @@ public class StatisticManager
     public void register(EventDataRow data)
     {
         statisticStorage.put(data);
+    }
+
+    public Set<Cook> getCookSet()
+    {
+        return cookSet;
     }
 
     public void register(Cook cook)
