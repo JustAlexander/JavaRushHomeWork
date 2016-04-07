@@ -5,15 +5,21 @@ import com.javarush.test.level27.lesson15.big01.statistic.StatisticEventManager;
 import com.javarush.test.level27.lesson15.big01.statistic.event.CookedOrderEventDataRow;
 
 import java.util.Observable;
-import java.util.Observer;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by alexandr on 15.03.16.
  */
-public class Cook extends Observable
+public class Cook extends Observable implements Runnable
 {
     private String name;
     private boolean busy;
+    private LinkedBlockingQueue<Order> queue;
+
+    public void setQueue(LinkedBlockingQueue<Order> queue)
+    {
+        this.queue = queue;
+    }
 
     public boolean isBusy()
     {
@@ -40,7 +46,7 @@ public class Cook extends Observable
         }
         catch (InterruptedException e)
         {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
         ConsoleHelper.writeMessage("Start cooking - " + order + ", cooking time " + order.getTotalCookingTime() + "min");
         CookedOrderEventDataRow event = new CookedOrderEventDataRow(order.tablet.toString(), name, order.getTotalCookingTime() * 60, order.getDishes());
@@ -48,5 +54,22 @@ public class Cook extends Observable
         setChanged();
         notifyObservers(order);
         busy = false;
+    }
+
+    @Override
+    public void run()
+    {
+        while (!Thread.currentThread().isInterrupted())
+        {
+            try
+            {
+                if (!queue.isEmpty() && !isBusy()) startCookingOrder(queue.take());
+                Thread.sleep(10);
+            }
+            catch (InterruptedException e)
+            {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 }

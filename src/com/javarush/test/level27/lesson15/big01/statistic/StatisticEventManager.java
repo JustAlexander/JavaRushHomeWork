@@ -16,7 +16,6 @@ public class StatisticEventManager
 {
     private StatisticStorage statisticStorage = new StatisticStorage();
     private static StatisticEventManager ourInstance = new StatisticEventManager();
-    private Set<Cook> cookSet = new HashSet<>();
 
     public static StatisticEventManager getInstance()
     {
@@ -31,16 +30,6 @@ public class StatisticEventManager
     public void register(EventDataRow data)
     {
         statisticStorage.put(data);
-    }
-
-    public Set<Cook> getCookSet()
-    {
-        return cookSet;
-    }
-
-    public void register(Cook cook)
-    {
-        cookSet.add(cook);
     }
 
     public Map<Date, Float> getAdvertisementProfit()
